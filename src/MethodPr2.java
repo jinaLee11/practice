@@ -2,7 +2,7 @@
 // balance 잔고, amount 총 액수, deposit 입금, withdraw 출금
 
 import java.util.Scanner;
-import java.util.WeakHashMap;
+
 
 public class MethodPr2 {
     public static void main(String[] args) {
