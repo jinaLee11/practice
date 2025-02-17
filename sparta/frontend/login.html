@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+        * {
+            font-family: "Noto Sans KR", serif;
+
+        }
+
+        .mytitle { /* class는 . */
+            width: 300px;
+            height: 200px;
+
+            color: white;
+            text-align: center;
+
+            padding-top: 30px;
+            border-radius: 8px;
+
+            background-image: url('https://www.ancient-origins.net/sites/default/files/field/image/Agesilaus-II-cover.jpg');
+            background-position: center;
+            background-size: cover;
+            /* 백그라운드 이미지 넣을 때는 위 background 3개 참조. 
+            3개가 항상 같이 다닌다고 생각하기 ! = url 주소만 바꿔서 사용하면 됨 */
+
+        } 
+
+        .wrap {
+            
+            width: 300px;
+            margin: 20px auto 0px auto;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="mytitle">
+            <h1> 로그인 페이지</h1>
+            <h5>아이디, 비밀번호를 입력해주세요.</h5>
+        </div>
+        <p>id : <input type="text" /></p>
+        <p>pw : <input type="password"></p>
+        <button> 로그인하기 </button>
+    </div>
+
+
+
+
+
+</body>
+
+</html>
