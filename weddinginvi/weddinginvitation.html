@@ -1,0 +1,339 @@
+<!-- 예제 참고 링크 (cmd + 클릭)
+잇츠카드
+https://www.itscard.co.kr/mobile/new_m/mcard/minifyHTML/MCard29.asp 
+블로그
+https://velog.io/@innes_kwak/01.-%ED%86%A0%EC%9D%B4%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%AA%A8%EB%B0%94%EC%9D%BC-%EC%B2%AD%EC%B2%A9%EC%9E%A51
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모바일청첩장</title>
+    <!-- 제이쿼리 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        /* 폰트 */
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@100..900&display=swap');
+
+        * {
+            font-family: "Gowun Dodum", serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column; /* 세로방향으로 나열 */
+            align-items: center; /* 가로방향 가운데 정렬 */
+            height: 100vh; /* 화면 전체 높이를 사용 */
+            margin: 0; /* 기본 여백 제거 */
+        }
+
+        .wrapper {
+            width: 450px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .wrapper .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .wrapper .nav .current-date {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .calendar ul {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .calendar .weeks li {
+            font-weight: 500;
+        }
+
+        .calendar .days {
+            margin-bottom: 20px;
+        }
+
+        .calendar ul li {
+            width: calc(100% / 7);
+            position: relative;
+        }
+
+        .calendar .days li {
+            z-index: 1;
+            margin-top: 30px;
+        }
+
+        #weddingday {
+            background-color: rgba(156, 156, 209, 0.345);
+        }
+
+        hr {
+            width: 20%;
+            border: solid 1px black;
+        }
+
+        .phone-btn button {
+            border: 1px solid skyblue;
+            border-radius: 100%;
+        }
+
+        .mycards {
+            /* 모바일청첩장이니까 모바일 사이즈로 고정 시켜야 하는데.. 우야지 */
+            margin: 5% 10% 5% 10%;
+            /* 위오아왼 margin 바깥여백 padding 안쪽여백 */
+            padding: 20px;
+            border: 2px solid black;
+        }
+
+        .main img {
+            width: 400px;
+            height: 300px;
+
+        }
+    </style>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            //생략
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        /* 데이터 추가 - 방명록 */
+        $("#postingbtn").click(async function () {
+            let name = $('#name').val();
+            let guestmessage = $('#guestmessage').val();
+
+            let doc = {
+                'name': name,
+                'guestmessage': guestmessage,
+            };
+            await addDoc(collection(db, "wedding"), doc); /* addDoc 더해줌 */
+            alert('저장 완료');
+            window.location.reload(); /* 새로고침 */
+        })
+
+        /* 데이터 불러와 카드 추가 - 방명록 */
+        let docs = await getDocs(collection(db, "wedding")); /* getDocs : DB에서 가져오기 */
+        docs.forEach((doc) => {
+            let row = doc.data();
+            let name = row['name'];
+            let guestmessage = row['guestmessage'];
+
+            let temp_html = `
+              <div class="col"> 
+                <div class="card h-100">
+                    <img src="./명수옹.JPG" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="cardtitle">${name}</h5>
+                        <p class="cardtext">${guestmessage}</p>
+                    </div>
+                </div>
+            </div>`;
+            $('#card').append(temp_html);
+        });
+
+
+
+    </script>
+
+</head>
+
+<body>
+    <div class="main">
+        <h1>4月 1日</h1><br/>
+        <audio src="./music.mp3" controls muted></audio>
+        <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTAzMDRfMjYx%2FMDAxNjE0ODQ0MTgyOTU3.WRTKb4uRXE-kH6F4ZzXcEO3y6XbwSqkkMrGXl5yImXAg.bTZydJtweoCa0cWXA7A7aNxlxCiLi0eUL88qsD9NJ4kg.JPEG.onlyone4149%2FIMG_0213.jpg&type=sc960_832"
+            alt="어데가서 사진받노"> <!-- 사진 -->
+        <h2>김신랑 / 김신부</h2>
+        <p>토요일 오후 1시 30분<br />
+            판교 W스퀘어컨벤션
+        </p>
+    </div>
+
+    <hr> <!--구분선-->
+
+    <div class="ment">
+        <pre>
+            서로가 마주보며 다져온 사랑을
+            이제 함께 한 곳을 바라보며
+            걸어갈 수 있는 큰 사랑으로
+            키우고자 합니다.
+            저희 두 사람이 사랑의 이름으로
+            지켜나갈 수 있도록
+            앞날을 축복해 주시면
+            감사하겠습니다.
+            </pre>
+    </div>
+
+    <div class="parents">
+        어무니 * 아부지의 차녀 김신부<br />
+        어무니 * 아부지의 장남 김신랑
+    </div>
+
+    <div class="phone">
+        <div>
+            소중한 당신을 초대합니다.
+        </div>
+        <div class="phone-btn">
+            신랑에게 연락하기 <button type="button" class="btn btn-info">📞</button> <br />
+            신부에게 연락하기 <button type="button" class="btn btn-info">📞</button>
+        </div>
+    </div>
+
+    <div class="wrapper"> <!-- 달력 -->
+        <header>
+            <div class="nav">
+                <p class="current-date">April 2028</p>
+            </div>
+        </header>
+        <div class="calendar">
+            <ul class="weeks">
+                <li>Sun</li>
+                <li>Mon</li>
+                <li>Tue</li>
+                <li>Wed</li>
+                <li>Thu</li>
+                <li>Fri</li>
+                <li>Sat</li>
+            </ul>
+            <ul class="days">
+                <li id="weddingday">1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+                <li>10</li>
+                <li>11</li>
+                <li>12</li>
+                <li>13</li>
+                <li>14</li>
+                <li>15</li>
+                <li>16</li>
+                <li>17</li>
+                <li>18</li>
+                <li>19</li>
+                <li>20</li>
+                <li>21</li>
+                <li>22</li>
+                <li>23</li>
+                <li>24</li>
+                <li>25</li>
+                <li>26</li>
+                <li>27</li>
+                <li>28</li>
+                <li>29</li>
+                <li>30</li>
+                <li>31</li>
+            </ul>
+        </div>
+    </div>
+
+    <hr> <!--구분선-->
+    <div class="gallery">
+        <h4>갤러리</h4>
+        <img src="" alt="">
+    </div>
+
+    <hr> <!--구분선-->
+    <div class="movie">
+        <h4>영상보기</h4>
+    </div>
+
+    <hr> <!--구분선-->
+    <div class="map">
+        <h4>오시는길</h4>
+        <div>경기 성남시 분당구 판교역로226번길 16 <br />
+            W스퀘어컨벤션<br />
+            tel : 031-703-0116
+        </div>
+    </div>
+
+    <hr> <!--구분선-->
+    <div class="message">
+        <!-- 메세지 카드 
+         1. db 연결하기
+         2. db에 데이터 전송
+         3. db에서 데이터 가져와서 새로 붙여넣기
+         4. 이름 혹은 내용 미작성시 등록 불가 alert
+         5. 삭제기능&비밀번호? 혹은 작성시 취소 불가 alert
+         6. 등록 완료 alert
+         7. 내가 쓴것만 삭제 가능 로직(db삭제)
+         -->
+        <h4>메시지</h4>
+        <p>축하 메시지를 남겨주세요.</p>
+        <input type="text" placeholder="이름" id="name">
+        <input type="text" placeholder="내용" id="guestmessage">
+        <button type="button" id="postingbtn" class="btn btn-outline-secondary">등록하기</button>
+
+    </div>
+
+    <div class="mycards">
+        <div id="card" class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col"> <!-- 카드 -->
+                <div class="card h-100">
+                    <img src="./명수옹.JPG" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="cardtitle"> 작성자 </h5>
+                        <p class="cardtext"> 내용 </p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">날짜</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col"> <!-- 카드 -->
+                <div class="card h-100">
+                    <img src="./명수옹.JPG" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="cardtitle"> 작성자 </h5>
+                        <p class="cardtext"> 내용 </p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">날짜</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col"> <!-- 카드 -->
+                <div class="card h-100">
+                    <img src="./명수옹.JPG" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="cardtitle"> 작성자 </h5>
+                        <p class="cardtext"> 내용 </p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">날짜</small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
