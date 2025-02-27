@@ -16,7 +16,6 @@ public class BasicCal {
             int b = sc.nextInt();
             System.out.print("두 수를 어떻게 할까요? (+,-,*,/) : ");
             char c = sc.next().charAt(0);
-            // charAt(0)?  https://colossus-java-practice.tistory.com/31
 
             if (b == 0 && c == '/') {
                 System.out.println("나눗셈 연산에서 분모 자리에 0이 올 수 없습니다.");
