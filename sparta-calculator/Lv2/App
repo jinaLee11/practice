@@ -1,0 +1,51 @@
+package spartaPJ.calculator2_3;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class App {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        Calculator calc = new Calculator();
+
+        while(true) {
+            int a = getValidNumber(sc,"첫번째 양의 정수 입력 : ");
+            int b = getValidNumber(sc,"두번째 양의 정수 입력 : ");
+            System.out.print("연산자를 입력해주세요. (+,-,*,/) : ");
+            char op = sc.next().charAt(0);
+
+            calc.calculate(a, b, op);
+            System.out.println("계산 결과 : " + calc.getResult());
+            calc.showResults();
+
+            System.out.print("계속 하시겠습니까? ('exit' 입력 시 종료) : ");
+            String endOrNot = sc.next();
+            if (endOrNot.equals("exit")) {
+                System.out.println("종료되었습니다.");
+                break;
+            }
+        }
+
+        // 저장된 모든 결과 출력
+        calc.showResults();
+
+        System.out.println("가장 처음 연산결과 삭제");
+        calc.removeResult();
+        calc.showResults();
+    }
+
+    // 예외처리 메서드
+    private static int getValidNumber(Scanner sc, String message){
+        while (true){
+            try {
+                System.out.print(message);
+                return sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("숫자만 입력해주세요!");
+                sc.next(); // 잘못된 입력 버림
+            }
+        }
+
+    }
+}
