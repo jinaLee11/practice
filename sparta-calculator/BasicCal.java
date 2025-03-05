@@ -1,4 +1,4 @@
-package sparta.calculator;
+package spartaPJ.calculator1;
 
 import java.util.Scanner;
 
@@ -8,7 +8,6 @@ public class BasicCal {
         Scanner sc = new Scanner(System.in);
 
         while(true) {
-
             System.out.println("======== 계산기 =========");
             System.out.print("첫번째 양의 정수 입력 : ");
             int a = sc.nextInt();
@@ -23,7 +22,7 @@ public class BasicCal {
             } else if (a < 0 || b < 0) {
                 System.out.println("양의 정수를 입력해주세요.");
                 continue;
-            } else if (c != '+' && c != '-' && c != '*' & c != '/') {
+            } else if (c != '+' && c != '-' && c != '*' && c != '/') {
                 System.out.println("+, -, *, / 중 하나만 입력해주세요.");
                 continue;
             } else if (c == '+') {
@@ -37,24 +36,12 @@ public class BasicCal {
             }
 
             System.out.print("다시하기 -> 아무글자나 입력 / 그만하기 -> exit : ");
-            String endornot = sc.next();
-            if (endornot.equals("exit")) {
+            String endOrNot = sc.next();
+            if (endOrNot.equals("exit")) {
                 System.out.println("종료되었습니다.");
-                System.exit(0);
+                break;
             }
 
         }
-
-
-            // 지저분한 코드 연산자로 정리, else자리에 뭘 넣을지
-            // 조건문 탈출시 ?
-            // continue는 안쪽 for 문으로 이동하고 break은 밖에 있는 for 문으로 이동합니다.
-            // break / Loop가 다 끝나지 않아도 반복문 탈출
-            //return / 반복문을 포함한 함수(method) 탈출
-            //continue / 반복문 내 작업문 탈출
-
-
-
-
     }
 }
